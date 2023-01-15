@@ -18,6 +18,9 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-core:4.3.18.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.3.18.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:4.3.18.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.0.6.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.0.6.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:5.0.6.RELEASE" />
         </element>
       </element>
     </root>
