@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
@@ -23,35 +22,30 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
 
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/js/**", "/css/**", "/images/**", "/font/**", "/html/**", "/templates/**", "/static/**");
-    }
-
-    @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorizationManager ->
-                        authorizationManager.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                                .requestMatchers("/loginProc").permitAll()
-                                .requestMatchers("/login/fail").permitAll()
-                                .requestMatchers("/dashboard").permitAll())
-        ;
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+        httpSecurity.authorizeHttpRequests(authorizationManager -> authorizationManager
+                .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+                .requestMatchers("/templates/**", "/static/**").permitAll()
+                .requestMatchers("/login/fail").permitAll()
+                .requestMatchers("/login/success").permitAll()
+                .anyRequest().authenticated());
 
-        httpSecurity.formLogin(
-                login -> login.loginProcessingUrl("/loginProc")
-                        .usernameParameter("userId")
-                        .passwordParameter("password")
-                        .successHandler(new CustomLoginSuccessHandler())
-                        .failureHandler(new CustomLoginFailureHandler())
-        );
+        httpSecurity.formLogin(login -> login
+                .loginProcessingUrl("/loginProc")
+                .usernameParameter("userId")
+                .passwordParameter("password")
+                //.defaultSuccessUrl("/main", true)
+                .successHandler(new CustomLoginSuccessHandler())
+                .failureHandler(new CustomLoginFailureHandler())
+                .permitAll());
 
-        httpSecurity.sessionManagement(sessionManagement ->
-                sessionManagement.invalidSessionUrl("/invalid")
-                        .maximumSessions(1)
-                        .maxSessionsPreventsLogin(true)
-                        .sessionRegistry(sessionRegistry()));
+        httpSecurity.sessionManagement(sessionManagement -> sessionManagement
+                .invalidSessionUrl("/invalid")
+                .maximumSessions(1)
+                .maxSessionsPreventsLogin(true)
+                .sessionRegistry(sessionRegistry()));
 
         httpSecurity.authenticationProvider(authenticationProvider());
 
