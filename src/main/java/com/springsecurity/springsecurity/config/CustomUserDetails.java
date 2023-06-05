@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -13,23 +12,31 @@ import java.util.Collection;
 @EqualsAndHashCode(of = "username")
 public class CustomUserDetails implements UserDetails {
 
-    private final User userDTO;
+    private String username;
+    private String password;
+    private String auth;
+
+    public CustomUserDetails(User user) {
+        this.username = user.getUserId();
+        this.password = user.getPassword();
+        this.auth = user.getAuth();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collection = new ArrayList<>();
-        collection.add(() -> "" + userDTO.getAuth());
+        collection.add(() -> "" + auth);
         return collection;
     }
 
     @Override
     public String getPassword() {
-        return userDTO.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return userDTO.getUserId();
+        return username;
     }
 
     @Override
