@@ -31,7 +31,7 @@ public class CustomInterceptor implements HandlerInterceptor {
             return true;
         } else {
             log.info("login result : {}" ,false);
-            response.sendRedirect("/login");
+            response.sendRedirect("/login/sessionExist");
             return false;
         }
     }

@@ -18,11 +18,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(getCustomInterceptor())
                 .addPathPatterns("/**") // 모든 URL에 대해 인터셉터 적용
                 .excludePathPatterns("/loginProc")
-                .excludePathPatterns("/login/**");
-
-
-
-        // 인터셉터 제외할 URL 패턴 설정
+                .excludePathPatterns("/login/success")
+                .excludePathPatterns("/login/fail")
+                .excludePathPatterns("/login/sessionExist");
     }
 
     @Bean

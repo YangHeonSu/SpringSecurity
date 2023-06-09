@@ -34,7 +34,6 @@ public class SecurityConfig {
                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                 .requestMatchers("/templates/**", "/static/**").permitAll()
                 .requestMatchers("/login/fail").permitAll()
-                .requestMatchers("/login/success").permitAll()
                 .requestMatchers("/login/sessionExist").permitAll()
                 .anyRequest().authenticated());
 
@@ -66,7 +65,6 @@ public class SecurityConfig {
     public AuthenticationFailureHandler loginFailHandler() {
         return new CustomLoginFailureHandler(sessionRepository);
     }
-
 
     @Bean
     public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {

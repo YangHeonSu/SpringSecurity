@@ -27,10 +27,11 @@ public class LoginController {
     }
 
     @GetMapping("/login/sessionExist")
-    public ResponseEntity<Map<String, Object>> getSessionExistInfo() {
+    public ResponseEntity<Map<String, Object>> getSessionExistInfo(HttpServletRequest request) {
 
         Map<String, Object> session = new HashMap<>();
         session.put("result" , "이미 로그인된 계정");
+
         return ResponseEntity.ok(session);
     }
     
