@@ -46,7 +46,6 @@ public class SecurityConfig {
                 .permitAll());
 
         httpSecurity.sessionManagement(sessionManagement -> sessionManagement
-                .invalidSessionUrl("/invalid")
                 .maximumSessions(1)
                 .maxSessionsPreventsLogin(true)
                 .sessionRegistry(sessionRegistry()));

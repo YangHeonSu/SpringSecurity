@@ -1,5 +1,8 @@
 server:
   port: 8080
+  servlet:
+    session:
+      timeout: 600
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver

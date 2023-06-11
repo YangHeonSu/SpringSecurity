@@ -5,12 +5,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 import java.io.IOException;
 
+@Slf4j
 @RequiredArgsConstructor
 public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
 
@@ -24,6 +26,8 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
             response.sendRedirect("/login/fail");
         } else if (sessionRepository.existsByUserId(request.getParameter("userId"))) {
             response.sendRedirect("/login/sessionExist");
+        } else {
+            log.info("login Fail Message : {}" , exception.getMessage());
         }
     }
 }
