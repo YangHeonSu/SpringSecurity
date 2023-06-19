@@ -12,15 +12,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "session")
-public class Session extends BaseTimeEntity {
+@Table(name = "spring_session")
+public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private String id;
-    @Column(name = "user_id")
+    private String PRIMARY_ID;
+    private String SESSION_ID;
+    private String CREATION_TIME;
+    private String LAST_ACCESS_TIME;
+    private String MAX_INACTIVE_INTERVAL;
+    private String EXPIRY_KEY;
+    @Column(name = "PRINCIPAL_NAME")
     private String userId;
-    @Column(name = "session_id")
-    private String sessionId;
+
+
 }

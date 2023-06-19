@@ -1,9 +1,10 @@
 package com.springsecurity.springsecurity.login;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final SessionRepository sessionRepository;
+    private final SessionRepository2 sessionRepository2;
 
     @GetMapping("/login/fail")
     public ResponseEntity<Map<String, Object>> getLoginFailInfo() {
@@ -37,19 +38,10 @@ public class LoginController {
     
 
     @GetMapping("/login/success")
-    public ResponseEntity<Map<String, Object>> getLoginInfo(HttpServletRequest request, Principal principal) {
+    public ResponseEntity<Map<String, Object>> getLoginInfo(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 
-        HttpSession session = request.getSession();
         Map<String, Object> loginSuccess = new HashMap<>();
         loginSuccess.put("result" , "success");
-
-        SessionDTO sessionDTO = new SessionDTO();
-
-        sessionDTO.setUserId(principal.getName());
-        sessionDTO.setSessionId(session.getId());
-        Session sessionEntity = sessionDTO.toEntity();
-
-        sessionRepository.save(sessionEntity);
 
         return ResponseEntity.ok(loginSuccess);
     }

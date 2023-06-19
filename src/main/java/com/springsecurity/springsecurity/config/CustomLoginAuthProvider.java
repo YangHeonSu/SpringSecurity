@@ -1,8 +1,11 @@
 package com.springsecurity.springsecurity.config;
 
+import com.springsecurity.springsecurity.login.SessionRepository2;
 import com.springsecurity.springsecurity.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -11,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+@Slf4j
 @RequiredArgsConstructor
 public class CustomLoginAuthProvider implements AuthenticationProvider {
 
@@ -22,9 +26,7 @@ public class CustomLoginAuthProvider implements AuthenticationProvider {
 
         String userId = authentication.getName();
         String password = (String) authentication.getCredentials();
-
         CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(userId);
-
 
         if (userDetails.getUsername() == null) {
             throw new UsernameNotFoundException("아이디를 찾을 수 없습니다.");

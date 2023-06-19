@@ -7,14 +7,11 @@ import lombok.Setter;
 @Setter
 public class SessionDTO {
 
-    private String id;
-    private String userId;
-    private String sessionId;
-
-    public Session toEntity() {
-        return Session.builder()
-                .userId(userId)
-                .sessionId(sessionId)
-                .build();
-    }
+    private String PRIMARY_ID;
+    private String SESSION_ID;
+    private String CREATION_TIME;
+    private String LAST_ACCESS_TIME;
+    private String MAX_INACTIVE_INTERVAL;
+    private String EXPIRY_KEY;
+    private String PRINCIPAL_NAME;
 }

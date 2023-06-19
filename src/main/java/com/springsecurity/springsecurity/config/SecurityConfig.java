@@ -1,6 +1,6 @@
 package com.springsecurity.springsecurity.config;
 
-import com.springsecurity.springsecurity.login.SessionRepository;
+import com.springsecurity.springsecurity.login.SessionRepository2;
 import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
@@ -24,7 +24,7 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
-    private final SessionRepository sessionRepository;
+    private final SessionRepository2 sessionRepository2;
 
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -46,7 +46,6 @@ public class SecurityConfig {
                 .permitAll());
 
         httpSecurity.sessionManagement(sessionManagement -> sessionManagement
-                .invalidSessionUrl("/invalid")
                 .maximumSessions(1)
                 .maxSessionsPreventsLogin(true)
                 .sessionRegistry(sessionRegistry()));
@@ -63,7 +62,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationFailureHandler loginFailHandler() {
-        return new CustomLoginFailureHandler(sessionRepository);
+        return new CustomLoginFailureHandler(sessionRepository2);
     }
 
     @Bean
