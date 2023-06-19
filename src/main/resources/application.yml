@@ -1,11 +1,18 @@
 server:
   port: 8080
+  servlet:
+    session:
+      timeout: 120
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://127.0.0.1:3306/asap?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: mysql12#$
+  session:
+    timeout: 120
+    store-type: jdbc
+    jdbc.initialize-schema: always
 
   jpa:
     hibernate:
