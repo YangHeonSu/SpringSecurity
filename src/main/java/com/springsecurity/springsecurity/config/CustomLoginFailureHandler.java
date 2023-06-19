@@ -27,6 +27,8 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
             response.sendRedirect("/login/fail");
         } else if (sessionRepository2.existsByUserId(request.getParameter("userId"))) {
             response.sendRedirect("/login/sessionExist");
+        } else {
+            log.info("login Fail Message : {}" , exception.getMessage());
         }
         log.info("LOGIN FAIL REASON : {}", exception.getMessage());
 
