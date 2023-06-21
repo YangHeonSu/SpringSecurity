@@ -1,14 +1,10 @@
 package com.springsecurity.springsecurity.login;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import java.security.Principal;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,12 +29,11 @@ public class LoginController {
 
     /**
      * 로그인 시도 시 이미 로그인된 계정이 있을경우 안내 메세지
-     * 
-     * @param request HttpServletRequest request
+     *
      * @return ResponseEntity<Map<String, Object>> LoginExistInfo
      */
     @GetMapping("/login/sessionExist")
-    public ResponseEntity<Map<String, Object>> getSessionExistInfo(HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> getSessionExistInfo() {
 
         Map<String, Object> session = new HashMap<>();
         session.put("result" , "이미 로그인된 계정");
@@ -49,12 +44,10 @@ public class LoginController {
     /**
      * 로그인 성공 시 안내 메세지
      *
-     * @param request HttpServletRequest request
-     * @param principal Principal principal
      * @return ResponseEntity<Map<String, Object>> LoginSuccessInfo
      */
     @GetMapping("/login/success")
-    public ResponseEntity<Map<String, Object>> getLoginInfo(HttpServletRequest request, HttpServletResponse response, Principal principal) {
+    public ResponseEntity<Map<String, Object>> getLoginInfo() {
 
         Map<String, Object> loginSuccess = new HashMap<>();
         loginSuccess.put("result" , "success");

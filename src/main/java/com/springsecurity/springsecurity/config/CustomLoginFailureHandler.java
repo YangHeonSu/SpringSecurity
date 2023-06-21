@@ -21,7 +21,6 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response
             , AuthenticationException exception) throws IOException, ServletException {
-        log.info("LOGIN FAIL REASON : {}", exception.getMessage());
 
         if (exception instanceof BadCredentialsException) {
             response.sendRedirect("/login/fail");
@@ -30,7 +29,5 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
         } else {
             log.info("login Fail Message : {}" , exception.getMessage());
         }
-        log.info("LOGIN FAIL REASON : {}", exception.getMessage());
-
     }
 }
