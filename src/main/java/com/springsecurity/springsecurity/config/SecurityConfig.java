@@ -10,7 +10,6 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -46,8 +45,13 @@ public class SecurityConfig {
                 .failureHandler(loginFailHandler())
                 .permitAll());
 
+        httpSecurity.logout(logout -> logout
+                .logoutUrl("/logoutProc")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "remember-me")
+                .permitAll());
+
         httpSecurity.sessionManagement(sessionManagement -> sessionManagement
-                //.sessionCreationPolicy(SessionCreationPolicy.NEVER)
                 .maximumSessions(1)
                 .maxSessionsPreventsLogin(true)
                 .sessionRegistry(sessionRegistry()));
@@ -74,7 +78,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        return new CustomLoginAuthProvider(userDetailsService, encodePassword());
+        return new CustomLoginAuthProvider(userDetailsService, encodePassword(), sessionRegistry());
     }
 
     @Bean

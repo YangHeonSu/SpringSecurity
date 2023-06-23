@@ -22,16 +22,15 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response
             , AuthenticationException exception) throws IOException, ServletException {
-
+        log.info("login Fail Message : {}", exception.getMessage());
         if (exception instanceof UsernameNotFoundException) {
             response.sendRedirect("/login/fail");
         }
         if (exception instanceof BadCredentialsException) {
             response.sendRedirect("/login/fail");
-        } else if (sessionRepository2.existsByUserId(request.getParameter("userId"))) {
+        }
+        if (sessionRepository2.existsByUserId(request.getParameter("userId"))) {
             response.sendRedirect("/login/sessionExist");
-        } else {
-            log.info("login Fail Message : {}" , exception.getMessage());
         }
     }
 }
