@@ -18,8 +18,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(getCustomInterceptor())
                 .addPathPatterns("/**") // 모든 URL에 대해 인터셉터 적용
                 .excludePathPatterns("/loginProc")
-                .excludePathPatterns("/login/success")
                 .excludePathPatterns("/login/fail")
+                .excludePathPatterns("/login/expired")
                 .excludePathPatterns("/login/sessionExist");
     }
 

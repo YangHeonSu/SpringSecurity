@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
@@ -34,6 +35,7 @@ public class SecurityConfig {
                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                 .requestMatchers("/templates/**", "/static/**").permitAll()
                 .requestMatchers("/login/fail").permitAll()
+                .requestMatchers("/login/expired").permitAll()
                 .requestMatchers("/login/sessionExist").permitAll()
                 .anyRequest().authenticated());
 
@@ -46,8 +48,9 @@ public class SecurityConfig {
                 .permitAll());
 
         httpSecurity.logout(logout -> logout
-                .logoutUrl("/logoutProc")
+                .logoutUrl("/logout")
                 .invalidateHttpSession(true)
+                .logoutSuccessHandler(logoutSuccessHandler())
                 .deleteCookies("JSESSIONID", "remember-me")
                 .permitAll());
 
@@ -69,6 +72,11 @@ public class SecurityConfig {
     @Bean
     public AuthenticationFailureHandler loginFailHandler() {
         return new CustomLoginFailureHandler(sessionRepository2);
+    }
+
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return new CustomLogoutSuccessHandler();
     }
 
     @Bean

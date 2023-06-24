@@ -12,7 +12,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class LoginController {
 
-    private final SessionRepository2 sessionRepository2;
 
     /**
      * 로그인 실패 메시지 출력
@@ -39,6 +38,20 @@ public class LoginController {
         session.put("result" , "이미 로그인된 계정");
 
         return ResponseEntity.ok(session);
+    }
+
+    /**
+     * 세션 만료 및 로그아웃 시 안내 메세지
+     *
+     * @return ResponseEntity<Map<String, Object>> sessionExpiredMessage
+     */
+    @GetMapping("/login/expired")
+    public ResponseEntity<Map<String, Object>> getSessionExpired() {
+        Map<String, Object> sessionExpiredResult = new HashMap<>();
+        sessionExpiredResult.put("status" , 200);
+        sessionExpiredResult.put("message" , "로그아웃 성공");
+
+        return ResponseEntity.ok(sessionExpiredResult);
     }
     
     /**

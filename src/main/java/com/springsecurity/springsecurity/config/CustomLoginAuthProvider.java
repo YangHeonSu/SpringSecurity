@@ -40,7 +40,6 @@ public class CustomLoginAuthProvider implements AuthenticationProvider {
         for (Object principal : allPrincipals) {
 
             if (principal instanceof CustomUserDetails) {
-                CustomUserDetails customUserDetails = (CustomUserDetails) principal;
                 List<SessionInformation> sessions = sessionRegistry.getAllSessions(principal, false);
                 for (SessionInformation sessionInformation : sessions) {
                     sessionInformation.expireNow();
