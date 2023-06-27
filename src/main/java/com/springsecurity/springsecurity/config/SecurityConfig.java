@@ -1,7 +1,9 @@
 package com.springsecurity.springsecurity.config;
 
 import com.springsecurity.springsecurity.login.SessionRepository2;
+import com.springsecurity.springsecurity.user.UserRepository;
 import jakarta.servlet.DispatcherType;
+import jakarta.servlet.http.HttpSessionListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -18,13 +20,16 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 @Configuration
 @EnableWebSecurity
+@EnableJdbcHttpSession
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
     private final SessionRepository2 sessionRepository2;
 
     @Bean
@@ -82,6 +87,11 @@ public class SecurityConfig {
     @Bean
     public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
         return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
+    }
+
+    @Bean
+    public CustomSessionDestroyedHandler httpSessionListener() {
+        return new CustomSessionDestroyedHandler();
     }
 
     @Bean

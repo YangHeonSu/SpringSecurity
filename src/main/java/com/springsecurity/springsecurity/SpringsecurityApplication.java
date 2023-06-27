@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 @SpringBootApplication
-@EnableJdbcHttpSession(tableName = "spring_session")
+@EnableJdbcHttpSession
 public class SpringsecurityApplication {
 
 	public static void main(String[] args) {

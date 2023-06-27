@@ -1,8 +1,6 @@
 server:
   port: 8080
-  servlet:
-    session:
-      timeout: 300
+
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
@@ -14,7 +12,6 @@ spring:
     jdbc:
       initialize-schema: always
     timeout: 300
-
 
   jpa:
     hibernate:
