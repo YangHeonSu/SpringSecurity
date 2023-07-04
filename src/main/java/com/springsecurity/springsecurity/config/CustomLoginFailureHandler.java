@@ -29,7 +29,7 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
         if (exception instanceof BadCredentialsException) {
             response.sendRedirect("/login/fail");
         }
-        if (sessionRepository2.existsByUserId(request.getParameter("userId"))) {
+        else if (sessionRepository2.existsByUserId(request.getParameter("userId"))) {
             response.sendRedirect("/login/sessionExist");
         }
     }

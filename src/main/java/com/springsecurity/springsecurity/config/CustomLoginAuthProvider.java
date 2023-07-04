@@ -1,8 +1,11 @@
 package com.springsecurity.springsecurity.config;
 
+import com.springsecurity.springsecurity.login.SessionRepository2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -21,6 +24,7 @@ public class CustomLoginAuthProvider implements AuthenticationProvider {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final SessionRegistry sessionRegistry;
+    private final SessionRepository2 sessionRepository;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -33,16 +37,16 @@ public class CustomLoginAuthProvider implements AuthenticationProvider {
             throw new UsernameNotFoundException("아이디를 찾을 수 없습니다.");
         }
         if (!this.bCryptPasswordEncoder.matches(password, userDetails.getPassword())) {
-            throw new UsernameNotFoundException("비밀번호를 다시 확인해주세요.");
+            throw new BadCredentialsException("비밀번호를 다시 확인해주세요.");
         }
 
         List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
         for (Object principal : allPrincipals) {
-
             if (principal instanceof CustomUserDetails) {
                 List<SessionInformation> sessions = sessionRegistry.getAllSessions(principal, false);
                 for (SessionInformation sessionInformation : sessions) {
                     sessionInformation.expireNow();
+                    sessionRepository.deleteByUserId(userId);
                 }
             }
         }

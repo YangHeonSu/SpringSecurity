@@ -20,6 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
+import org.springframework.session.SessionRepository;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 @Configuration
@@ -29,7 +30,7 @@ import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHtt
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
-    private final UserRepository userRepository;
+    private final SessionRepository sessionRepository ;
     private final SessionRepository2 sessionRepository2;
 
     @Bean
@@ -90,13 +91,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CustomSessionDestroyedHandler httpSessionListener() {
-        return new CustomSessionDestroyedHandler();
-    }
-
-    @Bean
     public AuthenticationProvider authenticationProvider() {
-        return new CustomLoginAuthProvider(userDetailsService, encodePassword(), sessionRegistry());
+        return new CustomLoginAuthProvider(userDetailsService, encodePassword(), sessionRegistry(), sessionRepository2);
     }
 
     @Bean
